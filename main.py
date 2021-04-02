@@ -241,11 +241,11 @@ class Game(object):
 				2)		
 		
 		if self.sergant.sprite is not None:
-			pygame.draw.aaline(
-				self.window,
-				DARKGREEN,
-				self.sergant.sprite.laser_aim_coords[0],
-				self.sergant.sprite.laser_aim_coords[1])
+		#	pygame.draw.aaline(
+		#		self.window,
+		#		DARKGREEN,
+		#		self.sergant.sprite.laser_aim_coords[0],
+		#		self.sergant.sprite.laser_aim_coords[1])
 				
 			pygame.draw.circle(
 				self.window,
