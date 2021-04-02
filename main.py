@@ -228,11 +228,11 @@ class Game(object):
 		
 		# Criminal laser and explosions.
 		for c in self.criminals:
-			pygame.draw.aaline(
-				self.window,
-				DARKRED,
-				c.laser_aim_coords[0],
-				c.laser_aim_coords[1])
+			#pygame.draw.aaline(
+		#		self.window,
+			#	DARKRED,
+			#	c.laser_aim_coords[0],
+		#		c.laser_aim_coords[1])
 				
 			pygame.draw.circle(
 				self.window,
