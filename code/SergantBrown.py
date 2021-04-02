@@ -138,6 +138,9 @@ class SergantBrown(pygame.sprite.Sprite):
 			for c in self.criminals:
 				if c.rect.collidepoint(self.laser_aim_collision_point):
 					c.kill()
+					
+					# Remove from list
+					self.walls_criminals.remove(c)
 		
 		
 		# Do radar stuff here.

@@ -10,8 +10,8 @@ from code.Fog import Fog
 from code import helpers
 
 
-WINDOW_WIDTH = 1366
-WINDOW_HEIGHT = 768
+WINDOW_WIDTH = 1350
+WINDOW_HEIGHT = 750
 
 RED = pygame.Color(255, 0, 0, 0)
 DARKRED = pygame.Color(100, 0, 0, 0)
@@ -26,7 +26,7 @@ GREY = pygame.Color(100, 100, 100, 0)
 FPS = 30
 
 ARENA_DIR = "maps"
-ARENA_FILE = "map1.txt"
+ARENA_FILE = "map5.txt"
 
 IMAGE_DIR = "graphics"
 WALL_FILE = "wall.png"
@@ -81,7 +81,7 @@ class Game(object):
 		args["tile_dict"] = ARENA_TILE_DICT
 		args["tile_width"] = 50
 		args["tile_height"] = 50
-		args["exclusion_list"] = [" ", "S", "1", "2"]
+		args["exclusion_list"] = [" ", "S", "1", "2", "3", "4", "5"]
 			
 		self.arena = Arena(args)
 	
@@ -136,7 +136,7 @@ class Game(object):
 			ARENA_DIR,
 			ARENA_FILE)	
 			
-		criminals = ["1", "2"]
+		criminals = ["1", "2", "3", "4", "5"]
 		for x in criminals:
 			start_pos_centerx_centery = helpers.find_start_pos(
 				filepath_map,
