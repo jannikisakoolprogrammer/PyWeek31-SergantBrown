@@ -301,11 +301,6 @@ class Game(object):
 		
 		# Criminal laser and explosions.
 		for c in self.criminals:
-			#pygame.draw.aaline(
-		#		self.window,
-			#	DARKRED,
-			#	c.laser_aim_coords[0],
-		#		c.laser_aim_coords[1])
 				
 			pygame.draw.circle(
 				self.window,
@@ -314,11 +309,6 @@ class Game(object):
 				2)		
 		
 		if self.sergant.sprite is not None:
-		#	pygame.draw.aaline(
-		#		self.window,
-		#		DARKGREEN,
-		#		self.sergant.sprite.laser_aim_coords[0],
-		#		self.sergant.sprite.laser_aim_coords[1])
 				
 			pygame.draw.circle(
 				self.window,

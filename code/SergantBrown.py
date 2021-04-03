@@ -69,6 +69,9 @@ class SergantBrown(pygame.sprite.Sprite):
 			_args["shot_sound"])
 		
 		
+		self.move_right = self.move_left = self.move_up = self.move_down = False
+		
+		
 	def init_criminals(self, _criminals):
 		self.criminals = _criminals
 		for c in self.criminals:
@@ -82,39 +85,48 @@ class SergantBrown(pygame.sprite.Sprite):
 		possible_moves = self.arena.get_possible_moves(
 			self.char)
 		cont = False
-		if not self.in_movement:
-			for e in _eventlist:
-				if e.type == pygame.KEYDOWN:  #and not self.key_already_down:
-					if e.key == pygame.K_w:
-						possible_next_move = [self.own_pos[0]-1, self.own_pos[1]]
-						cont = True
-	
-					if e.key == pygame.K_s:
-						possible_next_move = [self.own_pos[0]+1, self.own_pos[1]]
-						cont = True
-						
-					if e.key == pygame.K_a:
-						possible_next_move = [self.own_pos[0], self.own_pos[1]-1]
-						cont = True
-						
-					if e.key == pygame.K_d:
-						possible_next_move = [self.own_pos[0], self.own_pos[1]+1]
-						cont = True
-					
-					
-					if not cont:
-						break
-						
-					self.key_already_down = True
 
-					if possible_next_move in possible_moves:
-						# Move there.
-						self.in_movement = True
-						self.current_movement_cycle = 0
-						self.next_pos = possible_next_move
-				
-				# elif e.type == pygame.KEYUP:
-					# self.key_already_down = False
+		for e in _eventlist:
+			if e.type == pygame.KEYDOWN:  #and not self.key_already_down:
+				if e.key == pygame.K_w:
+					self.move_up = True
+				if e.key == pygame.K_s:
+					self.move_down = True
+				if e.key == pygame.K_a:
+					self.move_left = True
+				if e.key == pygame.K_d:
+					self.move_right = True
+
+			if e.type == pygame.KEYUP:
+				if e.key == pygame.K_w:
+					self.move_up = False
+				if e.key == pygame.K_s:
+					self.move_down = False
+				if e.key == pygame.K_a:
+					self.move_left = False
+				if e.key == pygame.K_d:
+					self.move_right = False			
+						
+		if not self.in_movement:
+			possible_next_move = None
+			if self.move_up:
+				possible_next_move = [self.own_pos[0]-1, self.own_pos[1]]
+			if self.move_down:
+				possible_next_move = [self.own_pos[0]+1, self.own_pos[1]]
+			if self.move_left:
+				possible_next_move = [self.own_pos[0], self.own_pos[1]-1]	
+			if self.move_right:
+				possible_next_move = [self.own_pos[0], self.own_pos[1]+1]				
+			
+			if possible_next_move is not None:
+				if possible_next_move in possible_moves:
+					# Move there.
+					self.in_movement = True
+					self.current_movement_cycle = 0
+					self.next_pos = possible_next_move
+					
+					# elif e.type == pygame.KEYUP:
+						# self.key_already_down = False
 					
 		if self.in_movement:
 			self.move()
