@@ -71,6 +71,11 @@ class SergantBrown(pygame.sprite.Sprite):
 		
 		self.move_right = self.move_left = self.move_up = self.move_down = False
 		
+		self.radar_text = _args["radar_text"]
+		
+		self.menu_no = False
+		self.shots_fired = 0
+		
 		
 	def init_criminals(self, _criminals):
 		self.criminals = _criminals
@@ -142,25 +147,27 @@ class SergantBrown(pygame.sprite.Sprite):
 		# Calc laser stuff.
 		self.calc_laser_aim()
 		
-		if pygame.mouse.get_pressed()[0] == True and not self.mouse_already_down:
-			self.shot_sound.play()
-			self.mouse_already_down = True
-			params = dict()
-			params["width_range"] = [1, 3]
-			params["height_range"] = [1, 3]
-			params["colour"] = pygame.Color(0, 255, 0, 0)
-			params["coords"] = self.laser_aim_collision_point
-			params["n_particles"] = random.randint(5, 10)
-			params["ttl_range"] = [5, 15]
-			self.explosions.append(
-				Explosion(params))
-				
-			for c in self.criminals:
-				if c.rect.collidepoint(self.laser_aim_collision_point):
-					c.kill()
+		if not self.mouse_already_down and not self.menu_no:
+			if pygame.mouse.get_pressed()[0] == True:		
+				self.shots_fired += 1
+				self.shot_sound.play()
+				self.mouse_already_down = True
+				params = dict()
+				params["width_range"] = [1, 3]
+				params["height_range"] = [1, 3]
+				params["colour"] = pygame.Color(0, 255, 0, 0)
+				params["coords"] = self.laser_aim_collision_point
+				params["n_particles"] = random.randint(5, 10)
+				params["ttl_range"] = [5, 15]
+				self.explosions.append(
+					Explosion(params))
 					
-					# Remove from list
-					self.walls_criminals.remove(c)
+				for c in self.criminals:
+					if c.rect.collidepoint(self.laser_aim_collision_point):
+						c.kill()
+						
+						# Remove from list
+						self.walls_criminals.remove(c)
 		
 		if pygame.mouse.get_pressed()[0] == False and self.mouse_already_down:
 			self.mouse_already_down = False
@@ -171,12 +178,16 @@ class SergantBrown(pygame.sprite.Sprite):
 			if e.type == pygame.KEYDOWN:
 				if e.key == pygame.K_SPACE and self.radar_cooldown_counter >= self.radar_cooldown:
 					self.radar_cooldown_counter = 0
+					self.radar_text.update("No")
 		
 		if self.radar_cooldown_counter == 0:
 			self.fog.sprite.alpha = 0
 		
 		if self.radar_cooldown_counter < self.radar_cooldown:
 			self.radar_cooldown_counter += 1
+			
+			if self.radar_cooldown_counter >= self.radar_cooldown:
+				self.radar_text.update("Yes")
 					
 					
 	def move(self):
