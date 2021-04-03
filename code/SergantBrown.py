@@ -36,6 +36,7 @@ class SergantBrown(pygame.sprite.Sprite):
 		self.criminals = None
 		
 		self.key_already_down = False
+		self.mouse_already_down = False
 		
 		self.arena.init_matrix_for_char(self.char)
 		
@@ -126,8 +127,8 @@ class SergantBrown(pygame.sprite.Sprite):
 		# Calc laser stuff.
 		self.calc_laser_aim()
 		
-		if pygame.mouse.get_pressed()[0] == True:
-			
+		if pygame.mouse.get_pressed()[0] == True and not self.mouse_already_down:
+			self.mouse_already_down = True
 			params = dict()
 			params["width_range"] = [1, 3]
 			params["height_range"] = [1, 3]
@@ -144,6 +145,9 @@ class SergantBrown(pygame.sprite.Sprite):
 					
 					# Remove from list
 					self.walls_criminals.remove(c)
+		
+		if pygame.mouse.get_pressed()[0] == False and self.mouse_already_down:
+			self.mouse_already_down = False
 		
 		
 		# Do radar stuff here.
