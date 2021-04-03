@@ -6,6 +6,10 @@ Python 3.7.4
 PyGame 1.9.6
 
 ## How to play
+
+### Starting the game
+Double-click on main.py, or open up a command prompt / terminal, and navigate to the directiory, and type python main.py
+
 ### Movement
 - Movement: WASD-keys
 - Shooting: Left Mouse Button
