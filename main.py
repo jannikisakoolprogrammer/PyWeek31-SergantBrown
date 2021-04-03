@@ -103,6 +103,7 @@ class MainGame(object):
 			
 			if result["win"] is False:
 				self.game_over_screen()
+				Arena.matrixes = dict()
 				break
 			else:
 				complete_results["shots_fired"] += result["shots_fired"]
@@ -593,7 +594,8 @@ class Game(object):
 
 			self.update_game_objects()
 			
-			self.sergant.sprite.menu_no = False
+			if self.sergant.sprite is not None:
+				self.sergant.sprite.menu_no = False
 			
 			if self.sergant.sprite == None or len(self.criminals) == 0:
 				self.running = False
