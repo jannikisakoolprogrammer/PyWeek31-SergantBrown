@@ -172,6 +172,7 @@ class Game(object):
 	def run(self):
 		
 		self.running = True
+		pygame.mouse.set_visible(False)
 		
 		while self.running:
 		
@@ -255,6 +256,23 @@ class Game(object):
 		
 		for sg in self.explosions:
 			sg.draw(self.window)
+			
+		# Draw mouse aim.
+		mouse_coords = pygame.mouse.get_pos()
+		hor_line = [(mouse_coords[0]-10, mouse_coords[1]), (mouse_coords[0]+10, mouse_coords[1])]
+		vert_line = [(mouse_coords[0], mouse_coords[1]-10), (mouse_coords[0], mouse_coords[1]+10)]
+		pygame.draw.line(
+			self.window,
+			WHITE,
+			hor_line[0],
+			hor_line[1],
+			1)
+		pygame.draw.line(
+			self.window,
+			WHITE,
+			vert_line[0],
+			vert_line[1],
+			1)			
 
 
 game = Game()
