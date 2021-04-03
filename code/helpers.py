@@ -6,6 +6,11 @@ def load_image(_filepath):
 	return pygame.image.load(_filepath).convert_alpha()
 
 
+def load_sound(_filepath):
+
+	return pygame.mixer.Sound(_filepath)
+
+
 def find_start_pos(
 	_filepath_map,
 	_tile_size_width,

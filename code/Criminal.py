@@ -95,7 +95,10 @@ class Criminal(pygame.sprite.Sprite):
 		# Laser
 		self.explosions = _args["explosions"]
 		self.laser_aim_coords = []
-		self.laser_aim_angle_degrees = []		
+		self.laser_aim_angle_degrees = []	
+
+		self.def_shot = False
+		self.skip_first = True
 	
 
 	#def sensor_can_be_used_again(self):
@@ -111,6 +114,9 @@ class Criminal(pygame.sprite.Sprite):
 #		else:
 #			return False
 		self.laser_coords = [1366/2, 768/2]	
+		
+		self.shot_sound = helpers.load_sound(
+			_args["shot_sound"])		
 	
 	def update(self):
 	
@@ -127,7 +133,13 @@ class Criminal(pygame.sprite.Sprite):
 				self.get_movepoints_towards_player()
 				
 				# Laser coords towards player.
-				self.laser_coords = self.sergant.rect.center			
+				self.laser_coords = self.sergant.rect.center
+				
+				if self.skip_first is False:
+					self.def_shot = True
+				
+				if self.skip_first is True:
+					self.skip_first = False
 			
 			else:
 				# Meanwhile, move randomly.
@@ -154,8 +166,8 @@ class Criminal(pygame.sprite.Sprite):
 		self.calc_laser_aim()
 		
 		# randomly shoot
-		if random.randint(1, 100) == 50:
-			
+		if random.randint(1, 200) == 100 or self.def_shot:
+			self.shot_sound.play()
 			params = dict()
 			params["width_range"] = [1, 3]
 			params["height_range"] = [1, 3]
@@ -168,6 +180,8 @@ class Criminal(pygame.sprite.Sprite):
 				
 			if self.sergant.rect.collidepoint(self.laser_aim_collision_point):
 				self.sergant.kill()
+			
+			self.def_shot = False
 
 	
 	def get_movepoints_towards_player(self):

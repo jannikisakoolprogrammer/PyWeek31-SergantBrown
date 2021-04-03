@@ -33,6 +33,13 @@ WALL_FILE = "wall.png"
 SERGANT_FILE = "sergant.png"
 CRIMINAL_FILE = "criminal.png"
 
+MUSIC_DIR = "music"
+MUSIC = "chilled.mp3"
+
+SOUND_DIR = "sounds"
+SERGANT_SHOT_SOUND = "shot_player.wav"
+CRIMINAL_SHOT_SOUND = "shot_criminal.wav"
+
 ARENA_TILE_DICT = {
 	"#": os.path.join(
 		os.getcwd(),
@@ -52,6 +59,13 @@ class Game(object):
 		
 		self.running = False
 		self.events = None
+		
+		pygame.mixer.music.load(
+			os.path.join(
+				os.getcwd(),
+				MUSIC_DIR,
+				MUSIC))
+		pygame.mixer.music.play(-1)
 		
 		# Game objects
 		self.arena = pygame.sprite.Group()
@@ -116,6 +130,11 @@ class Game(object):
 			IMAGE_DIR,
 			SERGANT_FILE)
 			
+		filepath_shot_sound = os.path.join(
+			os.getcwd(),
+			SOUND_DIR,
+			SERGANT_SHOT_SOUND)
+			
 		args = dict()
 		args["filepath_sergant"] = filepath_sergant
 		args["centerx"] = start_pos_centerx_centery[0]
@@ -125,6 +144,7 @@ class Game(object):
 		args["explosions"] = self.explosions
 		args["fog"] = self.fog
 		args["radar_cooldown"] = 150
+		args["shot_sound"] = filepath_shot_sound
 			
 		self.sergant.sprite = SergantBrown(args)
 	
@@ -148,6 +168,11 @@ class Game(object):
 				IMAGE_DIR,
 				CRIMINAL_FILE)
 				
+			filepath_shot_sound = os.path.join(
+				os.getcwd(),
+				SOUND_DIR,
+				CRIMINAL_SHOT_SOUND)				
+				
 			args = dict()
 			args["filepath"] = filepath_criminal
 			args["centerx"] = start_pos_centerx_centery[0]
@@ -164,7 +189,7 @@ class Game(object):
 			args["char"] = x
 			args["explosions"] = self.explosions
 			args["radar_wait_interval"] = 150
-		
+			args["shot_sound"] = filepath_shot_sound		
 				
 			self.criminals.add(Criminal(args))
 		

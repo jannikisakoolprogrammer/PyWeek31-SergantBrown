@@ -65,6 +65,9 @@ class SergantBrown(pygame.sprite.Sprite):
 		self.radar_radius = 0
 		self.radar_recharge_factor = 10
 		
+		self.shot_sound = helpers.load_sound(
+			_args["shot_sound"])
+		
 		
 	def init_criminals(self, _criminals):
 		self.criminals = _criminals
@@ -128,6 +131,7 @@ class SergantBrown(pygame.sprite.Sprite):
 		self.calc_laser_aim()
 		
 		if pygame.mouse.get_pressed()[0] == True and not self.mouse_already_down:
+			self.shot_sound.play()
 			self.mouse_already_down = True
 			params = dict()
 			params["width_range"] = [1, 3]
