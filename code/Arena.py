@@ -32,6 +32,8 @@ class Arena(pygame.sprite.Group):
 		
 		exclusion_list = _args["exclusion_list"]
 		
+		print(self.filepath)
+		
 		with open(
 			self.filepath,
 			"r") as filehandle:

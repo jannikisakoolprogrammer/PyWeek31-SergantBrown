@@ -45,10 +45,9 @@ ARENA_TILE_DICT = {
 		os.getcwd(),
 		IMAGE_DIR,
 		WALL_FILE)}
+		
 
-
-
-class Game(object):
+class MainGame(object):
 	
 	def __init__(self):
 		self.window = pygame.display.set_mode((
@@ -56,6 +55,32 @@ class Game(object):
 			WINDOW_HEIGHT))
 		
 		self.clock = pygame.time.Clock()
+	
+	
+	def run(self):
+		level_filenames = []
+		
+		for filename in os.listdir(
+			os.path.join(
+				os.getcwd(),
+				ARENA_DIR)):
+				
+				level_filenames.append(filename)
+		
+		for filename in level_filenames:
+			game = Game(self.window, self.clock, filename)
+			game.run()
+			Arena.matrixes = dict()
+			
+
+
+class Game(object):
+	
+	def __init__(self, _window, _clock, _level_filename):
+		self.window = _window
+		self.clock = _clock
+		self.level_filename = _level_filename
+		
 		
 		self.running = False
 		self.events = None
@@ -88,14 +113,24 @@ class Game(object):
 		filepath = os.path.join(
 			os.getcwd(),
 			ARENA_DIR,
-			ARENA_FILE)
+			self.level_filename)
 		
 		args = dict()
 		args["filepath"] = filepath
 		args["tile_dict"] = ARENA_TILE_DICT
 		args["tile_width"] = 50
 		args["tile_height"] = 50
-		args["exclusion_list"] = [" ", "S", "1", "2", "3", "4", "5"]
+		
+		# Build exclusion list dynamically.
+		exclusion_list = []
+		filehandle = open(filepath)
+		contents = filehandle.read()		
+		for row in contents.splitlines():
+			for col in row:
+				if col != "#" and col not in exclusion_list:
+					exclusion_list.append(col)
+					
+		args["exclusion_list"] = exclusion_list
 			
 		self.arena = Arena(args)
 	
@@ -117,7 +152,7 @@ class Game(object):
 		filepath_map = os.path.join(
 			os.getcwd(),
 			ARENA_DIR,
-			ARENA_FILE)	
+			self.level_filename)	
 	
 		start_pos_centerx_centery = helpers.find_start_pos(
 			filepath_map,
@@ -154,9 +189,20 @@ class Game(object):
 		filepath_map = os.path.join(
 			os.getcwd(),
 			ARENA_DIR,
-			ARENA_FILE)	
+			self.level_filename)	
 			
-		criminals = ["1", "2", "3", "4", "5"]
+		# Build list of criminals dynamically from map.
+		# Build exclusion list dynamically.
+		criminals = []
+		filehandle = open(filepath_map)		
+		contents = filehandle.read()		
+		for row in contents.splitlines():
+			for col in row:
+				if col != "#" and col != "S" and col != " ":
+					if col not in criminals:
+						criminals.append(col)
+		criminals.sort()
+
 		for x in criminals:
 			start_pos_centerx_centery = helpers.find_start_pos(
 				filepath_map,
@@ -192,9 +238,10 @@ class Game(object):
 			args["shot_sound"] = filepath_shot_sound		
 				
 			self.criminals.add(Criminal(args))
-		
+			
 	
 	def run(self):
+
 		
 		self.running = True
 		pygame.mouse.set_visible(False)
@@ -214,8 +261,8 @@ class Game(object):
 			
 			self.clock.tick(FPS)
 			pygame.display.update()
-			
 		
+
 	def update_events(self):
 		
 		self.events = pygame.event.get()
@@ -300,5 +347,5 @@ class Game(object):
 			1)			
 
 
-game = Game()
-game.run()
+main_game = MainGame()
+main_game.run()
