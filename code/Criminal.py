@@ -17,6 +17,9 @@ class Criminal(pygame.sprite.Sprite):
 			Criminal,
 			self).__init__()
 			
+		self.image_orig = helpers.load_image(
+			_args["filepath"]) 			
+			
 		self.image = helpers.load_image(
 			_args["filepath"])
 		self.rect = self.image.get_rect()
@@ -442,6 +445,11 @@ class Criminal(pygame.sprite.Sprite):
 			math.atan2(
 				mouse_xy[1] - criminal_xy[1],
 				mouse_xy[0] - criminal_xy[0])) + 360) % 360
+				
+		# Rotate image.
+		self.image = pygame.transform.rotate(
+			self.image_orig,
+			-self.laser_aim_angle_degrees)				
 		
 		# Calc collision point.
 		cr = pygame.sprite.Sprite()

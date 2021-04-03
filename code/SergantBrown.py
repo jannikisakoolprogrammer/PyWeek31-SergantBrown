@@ -18,6 +18,9 @@ class SergantBrown(pygame.sprite.Sprite):
 			SergantBrown,
 			self).__init__()
 			
+		self.image_orig = helpers.load_image(
+			_args["filepath_sergant"]) 
+			
 		self.image = helpers.load_image(
 			_args["filepath_sergant"])
 		self.rect = self.image.get_rect()
@@ -188,6 +191,11 @@ class SergantBrown(pygame.sprite.Sprite):
 			math.atan2(
 				mouse_xy[1] - player_xy[1],
 				mouse_xy[0] - player_xy[0])) + 360) % 360
+				
+		# Rotate image.
+		self.image = pygame.transform.rotate(
+			self.image_orig,
+			-self.laser_aim_angle_degrees)
 		
 		# Calc collision point.
 		cr = pygame.sprite.Sprite()
